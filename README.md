@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanban Board
 
-## Getting Started
+A small Kanban task tracker built with **Next.js (App Router)**, **TypeScript** and **PostgreSQL**.
+This is a learning / portfolio project that is developed in small, well-described commits.
 
-First, run the development server:
+## Status
+
+- [x] Project setup (Next.js, TypeScript, Tailwind CSS, ESLint, Prettier, Vitest)
+- [x] PostgreSQL + Drizzle ORM, first migration (`users`)
+- [x] User registration (validation with Zod, bcrypt password hashing)
+- [ ] Sign in / sign out and sessions
+- [ ] Boards, columns and tasks (CRUD)
+- [ ] Drag-and-drop with persisted order
+- [ ] CI (GitHub Actions) and deployment
+
+## Tech stack
+
+| Area         | Tools                                        |
+| ------------ | -------------------------------------------- |
+| Framework    | Next.js 16 (App Router, Server Actions)      |
+| Language     | TypeScript                                   |
+| Styling      | Tailwind CSS                                 |
+| Database     | PostgreSQL 16                                |
+| ORM          | Drizzle ORM + drizzle-kit (SQL migrations)   |
+| Validation   | Zod                                          |
+| Passwords    | bcryptjs                                     |
+| Tests        | Vitest (unit + PostgreSQL integration tests) |
+| Code quality | ESLint, Prettier                             |
+
+## Getting started
+
+Requirements: Node.js 20+ and Docker (for PostgreSQL).
 
 ```bash
+# 1. Start PostgreSQL
+docker compose up -d
+
+# 2. Configure environment variables
+cp .env.example .env
+
+# 3. Install dependencies and create the database tables
+npm install
+npm run db:migrate
+
+# 4. Run the app
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command               | What it does                                          |
+| --------------------- | ----------------------------------------------------- |
+| `npm run dev`         | Start the development server                          |
+| `npm run build`       | Production build                                      |
+| `npm run lint`        | Run ESLint                                            |
+| `npm run typecheck`   | Run the TypeScript compiler without emitting files    |
+| `npm run format`      | Format the code with Prettier                         |
+| `npm test`            | Run the tests (needs the database from step 1)        |
+| `npm run db:generate` | Create a new SQL migration from changes in the schema |
+| `npm run db:migrate`  | Apply pending migrations to the database              |
+| `npm run db:studio`   | Open Drizzle Studio to browse the data                |
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/                 Routes and pages (Next.js App Router)
+    register/          Registration page, form and Server Action
+  db/                  Database: connection, schema, error helpers
+  lib/
+    auth/              Business logic (registerUser)
+    validation/        Zod schemas
+    password.ts        bcrypt hashing helpers
+drizzle/               Generated SQL migrations (commit them!)
+docker-compose.yml     Local PostgreSQL
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Commit convention
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `chore:`, `docs:`, `test:`.
